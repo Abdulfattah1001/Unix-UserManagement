@@ -33,3 +33,5 @@ For each user and specified in  the input file
 *: Creates a homedirectory for each user under /home using `mkdir`
 *: Sets ownership of the directoyr using `chown`
 *: Sets permission using   `chmod 700`
+
+#For practise more of this you can join us at (HNG INTERNSHIP)[https://hng.tech/internship] or (HNG HIRE)[https://hng.tech/hire]
