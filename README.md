@@ -34,4 +34,4 @@ For each user and specified in  the input file
 *: Sets ownership of the directoyr using `chown`
 *: Sets permission using   `chmod 700`
 
-#For practise more of this you can join us at (HNG INTERNSHIP)[https://hng.tech/internship] or (HNG HIRE)[https://hng.tech/hire]
+#For practise more of this you can join us at [HNG INTERNSHIP](https://hng.tech/internship) or [HNG HIRE](https://hng.tech/hire)
