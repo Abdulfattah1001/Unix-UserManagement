@@ -13,13 +13,14 @@ LOG_FILE="/var/log/user_management.log"
 #function to log messages
 log_message(){
 	local log_content="$1"
-	sudo echo "$(date '+%Y-%m-%d %H:%M:$S') - ${log_content}" >> "$LOG_FILE"
+	sudo echo "$(date '+%Y-%m-%d %H:%M:$S') - ${log_content}" >> sudo tee "$LOG_FILE"
 }
 
 
 #A function to generate a random password for a user
 generate_pssd(){
-	pwgen -s 14 1
+	#pwgen -s 14 1
+	openssl rand -base64 12
 }
 
 input_file=$1
@@ -45,11 +46,11 @@ while IFS=';' read -r user group;
 					then
 						log_message "Creating user $user"
 						#add the user to the specified group
-						sudo useradd -a -G "$group" "$user"
+						#sudo usermod -a -G "$group" "$user"
+						sudo useradd -m -G "$group" "$user"
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
-						IFS=',' read -ra
-						additional_groups <<< "$group"
+						IFS=',' read -ra additional_groups <<< "$group"
 						for group in "${additional_groups[@]}"
 							do
 								if ! getent group "$group" >/dev/null
@@ -61,10 +62,10 @@ while IFS=';' read -r user group;
 
 						#set password for the user
 						password=$(generate_pssd)
-						echo "$user:$password" | sudo chpasswd
+						sudo echo "$user:$password" | sudo chpasswd
 						log_message "set password for user:$user"
 
-						echo "$user:$password" >> /var/secure/user_passwords.txt
+						echo "$user:$password" >> sudo tee /var/secure/user_passwords.txt
 
 						log_message "Password stored for user $user successfully"
 
