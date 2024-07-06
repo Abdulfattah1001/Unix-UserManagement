@@ -1,6 +1,6 @@
 #! /bin/bash
 
-#Test if the scrip is run with a file
+#Test if the script is run with a file
 if [ $# -ne 1 ]; then
 	echo "Error Occurred: Usage : $0 <input_file>"
 	#if not exit the script
