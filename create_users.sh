@@ -73,15 +73,15 @@ while IFS=';' read -r user group;
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
 						IFS=',' read -ra additional_groups <<< "$group"
-						for group in "${additional_groups[@]}"
+						for gr in "${additional_groups[@]}"
 							do
-								if ! getent group "$group" >/dev/null
+								if ! getent group "$gr" >/dev/null
 									then
-										sudo groupadd "$group"
+										sudo groupadd "$gr"
 										log_message "Created group successfully"
-										sudo usermod -a -G "$group" "$user"
+										sudo usermod -a -G "$gr" "$user"
 								else
-									sudo usermod -a -G "$group" "$user"
+									sudo usermod -a -G "$gr" "$user"
 								fi
 								done
 
