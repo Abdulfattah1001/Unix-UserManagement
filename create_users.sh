@@ -64,8 +64,8 @@ while IFS=';' read -r user group;
 					sudo usermod -a -G "$group" "$user"
 				fi
 
-				#Check if the user is not existing before
-				if  id "$user" >/dev/null 2>&1
+				#Check if the user is existing before
+				if  id "$user" &>/dev/null
 					then
 						log_message "Creating user $user"
 						#add the user to the specified group
