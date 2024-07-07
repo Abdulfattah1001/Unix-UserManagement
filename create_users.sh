@@ -58,7 +58,6 @@ while IFS=';' read -r user group;
 					then
 						log_message "Creating user $user"
 						#add the user to the specified group
-						#creating the user personal group or primary group
 						sudo useradd -m -G "$user" "$user"
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
@@ -66,9 +65,12 @@ while IFS=';' read -r user group;
 						for group in "${additional_groups[@]}"
 							do
 								if ! getent group "$group" >/dev/null
-									then sudo groupadd "$group"
-									log_message "Created group successfully"
-									sudo usermod -a -G"$group" "$user"
+									then
+										sudo groupadd "$group"
+										log_message "Created group successfully"
+										sudo usermod -a -G "$group" "$user"
+								else
+									sudo usermod -a -G "$group" "$user"
 								fi
 								done
 
