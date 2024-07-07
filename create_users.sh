@@ -71,6 +71,7 @@ while IFS=';' read -r user group;
 						IFS=',' read -ra additional_groups <<< "$group"
 						for gr in "${additional_groups[@]}"
 							do
+								#Removing whitespace from the additional groups using sed
 								gr=$(echo "$gr" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 								if ! getent group "$gr" >/dev/null
 									then
