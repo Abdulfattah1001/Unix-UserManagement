@@ -32,6 +32,15 @@ while IFS=';' read -r user group;
 			if [ -n "$user" ] && [ -n "$group" ]
 				then echo "Processing -> $user $group"
 
+				#Check if personal group is already existing
+				if ! getent group "$user" >/dev/null
+					then log_message "Creating personal group"
+						sudo groupadd "$user"
+						log_message "Persoal group added succesfully"
+				else
+					log_message "Personal group already exits"
+				fi
+
 				#Check if the group is existing alredy, if not create it
 				if ! getent group "$group" >/dev/null
 					then log_message "Creating Group $group"
@@ -46,10 +55,8 @@ while IFS=';' read -r user group;
 					then
 						log_message "Creating user $user"
 						#add the user to the specified group
-						#sudo usermod -a -G "$group" "$user"
 						#creating the user personal group or primary group
 						sudo useradd -m -G "$user" "$user"
-						sudo useradd -m -G "$group" "$user"
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
 						IFS=',' read -ra additional_groups <<< "$group"
