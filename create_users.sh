@@ -65,11 +65,11 @@ while IFS=';' read -r user group;
 				fi
 
 				#Check if the user is not existing before
-				if ! id "$user" >/dev/null 2>&1
+				if  id "$user" >/dev/null 2>&1
 					then
 						log_message "Creating user $user"
 						#add the user to the specified group
-						sudo useradd -m -G "$user" "$user"
+						#sudo useradd -m -G "$user" "$user"
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
 						IFS=',' read -ra additional_groups <<< "$group"
