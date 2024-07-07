@@ -31,26 +31,37 @@ while IFS=';' read -r user group;
 			#Check wethear the user and the group was specified in the file line
 			if [ -n "$user" ] && [ -n "$group" ]
 				then echo "Processing -> $user $group"
+				#check if the user is not eisting before
+				if ! id "$user" >/dev/null 2>&1
+					then
+						log_message "Creating user $user"
+						sudo useradd "$user"
+				else
+					log_message "User exist before"
+				fi
 
 				#Check if personal group is already existing
 				if ! getent group "$user" >/dev/null
-					then log_message "Creating personal group"
+					then
+						log_message "Creating personal group"
 						sudo groupadd "$user"
-						sudo useradd -m -G "$user" "$user"
+						sudo usermod -a -G "$user" "$user"
 						log_message "Persoal group added succesfully"
 				else
 					log_message "Personal group already exits"
-					sudo groupadd "$user"
-					sudo useradd -m -G "$user" "$user"
+					sudo useradd -a -G "$user" "$user"
 				fi
 
-				#Check if the group is existing alredy, if not create it
+				#Check if the group is existing already, if not create it
 				if ! getent group "$group" >/dev/null
-					then log_message "Creating Group $group"
+					then
+						log_message "Creating Group $group"
 						sudo groupadd "$group"
 						log_message "Group created succesfully $group"
+						sudo usermod -a -G "$group" "$user"
 				else
 					log_message "Group already exist"
+					sudo usermod -a -G "$group" "$user"
 				fi
 
 				#Check if the user is not existing before
