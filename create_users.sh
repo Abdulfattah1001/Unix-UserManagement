@@ -36,9 +36,12 @@ while IFS=';' read -r user group;
 				if ! getent group "$user" >/dev/null
 					then log_message "Creating personal group"
 						sudo groupadd "$user"
+						sudo useradd -m -G "$user" "$user"
 						log_message "Persoal group added succesfully"
 				else
 					log_message "Personal group already exits"
+					sudo groupadd "$user"
+					sudo useradd -m -G "$user" "$user"
 				fi
 
 				#Check if the group is existing alredy, if not create it
@@ -87,6 +90,8 @@ while IFS=';' read -r user group;
 						log_message "Home directory created successfully for user $user"
 				else
 					log_message "User already exit"
+					sudo usermod -a -G "$user" "$user"
+					
 				fi
 			else
 				#
