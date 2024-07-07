@@ -56,8 +56,8 @@ while IFS=';' read -r user group;
 								if ! getent group "$group" >/dev/null
 									then sudo groupadd "$group"
 									log_message "Created group successfully"
-								fi
 									sudo usermod -a -G"$group" "$user"
+								fi
 								done
 
 						#set password for the user
