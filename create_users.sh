@@ -13,7 +13,7 @@ LOG_FILE="/var/log/user_management.log"
 #function to log messages
 log_message(){
 	local log_content="$1"
-	sudo echo "$(date '+%Y-%m-%d %H:%M:$S') - ${log_content}" >> sudo tee "$LOG_FILE"
+	echo "$(date '+%Y-%m-%d %H:%M:$S') - ${log_content}" | sudo tee -a "$LOG_FILE"
 }
 
 
@@ -65,7 +65,7 @@ while IFS=';' read -r user group;
 						sudo echo "$user:$password" | sudo chpasswd
 						log_message "set password for user:$user"
 
-						echo "$user:$password" >> sudo tee /var/secure/user_passwords.txt
+						echo "$user:$password" | sudo tee -a /var/secure/user_passwords.txt
 
 						log_message "Password stored for user $user successfully"
 
