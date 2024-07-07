@@ -47,6 +47,8 @@ while IFS=';' read -r user group;
 						log_message "Creating user $user"
 						#add the user to the specified group
 						#sudo usermod -a -G "$group" "$user"
+						#creating the user personal group or primary group
+						sudo useradd -m -G "$user" "$user"
 						sudo useradd -m -G "$group" "$user"
 						log_message "user group created and added successfully $user"
 						#handling additional groups for the user if the lines contains multiple groups (a,b,c)
